@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Profesores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../Estilos/estilos-profesores.css">
+</head>
+<body>
+    <!-- Menú lateral -->
+    <div class="menu-lateral">
+        <div class="logo">
+            <h2>Gestor de Profesores</h2>
+        </div>
+        
+        <div class="menu-item active" data-form="ingresar">
+            <i class="fas fa-user-plus"></i> Ingresar Profesor
+        </div>
+        
+        <div class="menu-item" data-form="buscar">
+            <i class="fas fa-search"></i> Buscar Profesor
+        </div>
+        
+        <div class="menu-item" data-form="actualizar">
+            <i class="fas fa-edit"></i> Actualizar Profesor
+        </div>
+        
+        <div class="menu-item" data-form="eliminar">
+            <i class="fas fa-trash-alt"></i> Eliminar Profesor
+        </div>
+        
+        <div class="menu-item" id="btn-inicio">
+            <i class="fas fa-home"></i> Menú Principal
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="contenido-principal">
+        <!-- Formulario de Ingreso de Profesor -->
+        <div id="form-ingresar" class="contenedor-formulario active">
+            <h2>Ingresar Profesor</h2>
+            <form id="formulario-ingresar">
+                <div class="grupo-campos">
+                    <div class="campo">
+                        <label for="numero_de_control_ingresar">Número de Control:</label>
+                        <input type="text" id="numero_de_control_ingresar" name="numero_de_control_ingresar" placeholder="Ingrese el número de control" required>
+                    </div>
+                    <div class="campo">
+                        <label for="nombre_ingresar">Nombre:</label>
+                        <input type="text" id="nombre_ingresar" name="nombre_ingresar" placeholder="Ingrese el nombre completo del profesor" required>
+                    </div>
+                </div>
+                
+                <div class="grupo-campos">
+                    <div class="campo">
+                        <label for="especialidad_ingresar">Especialidad:</label>
+                        <input type="text" id="especialidad_ingresar" name="especialidad_ingresar" placeholder="Ingrese la especialidad del profesor" required>
+                    </div>
+                </div>
+                
+                <div class="botones">
+                    <button type="button" class="btn btn-success" onclick="guardarProfesor()">Guardar</button>
+                    <button type="reset" class="btn btn-primary">Limpiar</button>
+                </div>
+                <div id="mensaje-ingresar" class="mensaje"></div>
+            </form>
+        </div>
+
+        <!-- Formulario de Búsqueda de Profesor -->
+        <div id="form-buscar" class="contenedor-formulario">
+            <h2>Buscar Profesor</h2>
+            <div class="grupo-campos">
+                <div class="campo">
+                    <label for="busqueda-numero">Número de Control:</label>
+                    <input type="text" id="busqueda-numero" placeholder="Ingrese número de control">
+                </div>
+            </div>
+            <div class="botones">
+                <button class="btn btn-primary" id="btn-buscar">Buscar</button>
+            </div>
+            <div id="resultados-busqueda" style="margin-top: 20px; display: none;">
+                <h3>Datos del Profesor</h3>
+                <div id="datos-profesor"></div>
+            </div>
+            <div id="mensaje-busqueda" class="mensaje"></div>
+        </div>
+
+        <!-- Formulario de Actualización de Profesor -->
+        <div id="form-actualizar" class="contenedor-formulario">
+            <h2>Actualizar Datos de Profesor</h2>
+            <div class="grupo-campos">
+                <div class="campo">
+                    <label for="actualizar-numero">Número de Control:</label>
+                    <input type="text" id="actualizar-numero" placeholder="Ingrese número de control">
+                </div>
+            </div>
+            <div class="botones">
+                <button class="btn btn-primary" id="btn-buscar-actualizar">Buscar</button>
+            </div>
+            <form id="formulario-actualizar" style="display: none;">
+                <div class="grupo-campos">
+                    <div class="campo">
+                        <label for="nombre_actualizar">Nombre:</label>
+                        <input type="text" id="nombre_actualizar" name="nombre_actualizar" placeholder="Nombre del profesor" required>
+                    </div>
+                    <div class="campo">
+                        <label for="especialidad_actualizar">Especialidad:</label>
+                        <input type="text" id="especialidad_actualizar" name="especialidad_actualizar" placeholder="Especialidad del profesor" required>
+                    </div>
+                </div>
+                
+                <div class="botones">
+                    <button type="button" class="btn btn-success" onclick="actualizarProfesor()">Actualizar</button>
+                    <button type="reset" class="btn btn-primary">Limpiar</button>
+                </div>
+                <div id="mensaje-actualizar" class="mensaje"></div>
+            </form>
+        </div>
+
+        <!-- Formulario de Eliminación de Profesor -->
+        <div id="form-eliminar" class="contenedor-formulario">
+            <h2>Eliminar Profesor</h2>
+            <div class="grupo-campos">
+                <div class="campo">
+                    <label for="eliminar-numero">Número de Control:</label>
+                    <input type="text" id="eliminar-numero" placeholder="Ingrese número de control">
+                </div>
+            </div>
+            <div class="botones">
+                <button class="btn btn-danger" id="btn-confirmar-eliminar">Eliminar</button>
+            </div>
+            <div id="mensaje-eliminar" class="mensaje"></div>
+        </div>
+    </div>
+
+    <script src="../validaciones/crud-profesores.js"></script>
+</body>
+</html>

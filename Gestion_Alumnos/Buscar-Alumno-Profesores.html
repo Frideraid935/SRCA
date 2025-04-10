@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Alumnos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../Estilos/estilo-alumnos.css">
+</head>
+<body>
+    <!-- Menú lateral -->
+    <div class="menu-lateral">
+        <div class="logo">
+            <h2>Gestor de Alumnos</h2>
+        </div>
+        
+        <div class="menu-item" data-form="buscar">
+            <i class="fas fa-search"></i> Buscar Alumno
+        </div>
+        
+
+        <!-- Botón de inicio abajo -->
+        <div class="menu-item" data-form="inicio" id="btn-inicio">
+            <i class="fas fa-home"></i> Menú Principal
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="contenido-principal">
+        <!-- Formulario de Búsqueda -->
+        <div id="form-buscar" class="contenedor-formulario">
+            <h2>Buscar Alumno</h2>
+            <div class="grupo-campos">
+                <div class="campo">
+                    <label for="busqueda-numero">Número de Control:</label>
+                    <input type="text" id="busqueda-numero" placeholder="Ingrese número de control">
+                </div>
+            </div>
+            <div class="botones">
+                <button class="btn btn-primary" id="btn-buscar">Buscar</button>
+            </div>
+            <div id="resultados-busqueda" style="margin-top: 20px; display: none;">
+                <h3>Datos del Alumno</h3>
+                <div id="datos-alumno"></div>
+            </div>
+            <div id="mensaje-busqueda" class="mensaje"></div>
+        </div>
+
+        <!-- Formulario de Actualización -->
+        <div id="form-actualizar" class="contenedor-formulario">
+            <h2>Actualizar Datos de Alumno</h2>
+            <div class="grupo-campos">
+                <div class="campo">
+                    <label for="actualizar-numero">Número de Control:</label>
+                    <input type="text" id="actualizar-numero" placeholder="Ingrese número de control">
+                </div>
+            </div>
+            <div class="botones">
+                <button class="btn btn-primary" id="btn-buscar-actualizar">Buscar</button>
+            </div>
+            <form id="formulario-actualizar" style="display: none;">
+                <!-- Los campos se clonarán del formulario de registro -->
+            </form>
+            <div id="mensaje-actualizar" class="mensaje"></div>
+        </div>
+    </div>
+
+    <script src="../validaciones/val-consultar_alu_prof.js"></script>
+</body>
+</html>
