@@ -1,125 +1,127 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const menuItems = document.querySelectorAll(".menu-item");
-    const botonesFormulario = document.querySelectorAll(".btn");
-    const formularioRegistro = document.getElementById("formulario-registro");
-    const formularioActualizar = document.getElementById("formulario-actualizar");
-    const formularioBusqueda = document.getElementById("form-buscar");
-    const formularioEliminar = document.getElementById("form-eliminar");
+document.addEventListener('DOMContentLoaded', function () {
+    const menuItems = document.querySelectorAll('.menu-item');
+    const formContainers = document.querySelectorAll('.contenedor-formulario');
 
-    // Manejador para cambiar de formulario cuando se selecciona un menú
+    // Cambiar entre formularios (Registro, Búsqueda, Actualización, Eliminación)
     menuItems.forEach(item => {
-        item.addEventListener("click", () => {
-            // Eliminar la clase 'active' de todos los elementos del menú
-            menuItems.forEach(i => i.classList.remove("active"));
-            // Agregar la clase 'active' al botón seleccionado
-            item.classList.add("active");
-
-            const formId = item.getAttribute("data-form");
-            mostrarFormulario(formId);
+        item.addEventListener('click', function () {
+            const formId = this.getAttribute('data-form');
+            formContainers.forEach(container => container.classList.remove('active'));
+            document.getElementById(`form-${formId}`).classList.add('active');
         });
     });
 
-    // Mostrar el formulario correspondiente
-    function mostrarFormulario(formId) {
-        // Ocultar todos los formularios
-        document.querySelectorAll(".contenedor-formulario").forEach(form => {
-            form.classList.remove("active");
-        });
-        // Mostrar el formulario correspondiente
-        const form = document.getElementById(`form-${formId}`);
-        if (form) {
-            form.classList.add("active");
-        }
-    }
+    // Manejo de envío de formularios mediante AJAX
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevenir el envío normal del formulario
 
-    // Función para validar los campos del formulario de registro
-    function validarFormularioRegistro() {
-        const campos = formularioRegistro.querySelectorAll("input");
-        for (let campo of campos) {
-            if (!campo.value) {
-                mostrarMensaje("Por favor, complete todos los campos.", "error", "mensaje-registro");
-                return false;
+            const formData = new FormData(this);
+            const action = formData.get('action'); // Obtener la acción del formulario
+
+            // Determinar el archivo PHP a usar según la acción
+            let phpFile = '';
+            switch (action) {
+                case 'registrar':
+                    phpFile = '../Controladores2/Ingresar_Alumno.php';
+                    break;
+                case 'buscar':
+                    phpFile = '../Controladores2/Buscar_Alumno.php';
+                    break;
+                case 'actualizar':
+                    phpFile = '../Controladores2/Actualizar_Alumno.php';
+                    break;
+                case 'eliminar':
+                    phpFile = '../Controladores2/Borrar_Alumno.php';
+                    break;
+                default:
+                    alert('Acción no válida.');
+                    return;
             }
-        }
-        return true;
-    }
 
-    // Función para mostrar mensajes de éxito o error
-    function mostrarMensaje(mensaje, tipo, idMensaje) {
-        const mensajeElement = document.getElementById(idMensaje);
-        mensajeElement.textContent = mensaje;
-        mensajeElement.className = tipo === "error" ? "mensaje error" : "mensaje exito";
-    }
+            // Usar AJAX para enviar el formulario sin recargar la página
+            fetch(phpFile, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const mensajeDiv = this.closest('.contenedor-formulario').querySelector('.mensaje');
+                if (data.success) {
+                    mensajeDiv.style.backgroundColor = '#dff0d8'; // Mensaje de éxito
+                    mensajeDiv.textContent = data.message;
 
-    // Función para manejar el envío del formulario de registro
-    formularioRegistro.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevenir el envío real del formulario
-        if (validarFormularioRegistro()) {
-            mostrarMensaje("Alumno registrado correctamente.", "exito", "mensaje-registro");
-            formularioRegistro.reset();
-        }
-    });
-
-    // Manejador para la búsqueda de alumnos
-    document.getElementById("btn-buscar").addEventListener("click", function () {
-        const numeroControl = document.getElementById("busqueda-numero").value;
-        if (numeroControl) {
-            // Simulando una búsqueda, normalmente se realizaría una llamada a un servidor
-            mostrarDatosAlumno(numeroControl);
-        } else {
-            mostrarMensaje("Por favor, ingrese el número de control.", "error", "mensaje-busqueda");
-        }
-    });
-
-    // Mostrar los datos de un alumno simulado
-    function mostrarDatosAlumno(numeroControl) {
-        const resultadosBusqueda = document.getElementById("resultados-busqueda");
-        const datosAlumno = document.getElementById("datos-alumno");
-        
-        // Simulando una respuesta de búsqueda
-        resultadosBusqueda.style.display = "block";
-        datosAlumno.textContent = `Alumno encontrado con número de control: ${numeroControl}`;
-    }
-
-    // Manejador para el formulario de actualización
-    document.getElementById("btn-buscar-actualizar").addEventListener("click", function () {
-        const numeroControl = document.getElementById("actualizar-numero").value;
-        if (numeroControl) {
-            mostrarFormularioActualizar(numeroControl);
-        } else {
-            mostrarMensaje("Por favor, ingrese el número de control.", "error", "mensaje-actualizar");
-        }
-    });
-
-    // Mostrar el formulario para actualizar datos
-    function mostrarFormularioActualizar(numeroControl) {
-        // Lógica para llenar los datos del formulario con la información del alumno
-        formularioActualizar.style.display = "block";
-        formularioActualizar.querySelector("input").value = numeroControl;
-    }
-
-    // Manejador para la eliminación de alumno
-    document.getElementById("btn-confirmar-eliminar").addEventListener("click", function () {
-        const numeroControl = document.getElementById("eliminar-numero").value;
-        if (numeroControl) {
-            // Simulando la eliminación, normalmente se realizaría una llamada a un servidor
-            mostrarMensaje("Alumno eliminado correctamente.", "exito", "mensaje-eliminar");
-        } else {
-            mostrarMensaje("Por favor, ingrese el número de control para eliminar.", "error", "mensaje-eliminar");
-        }
-    });
-
-    // Manejo de la acción de limpiar el formulario de registro
-    botonesFormulario.forEach(boton => {
-        if (boton.type === "reset") {
-            boton.addEventListener("click", () => {
-                mostrarMensaje("Formulario limpiado correctamente.", "exito", "mensaje-registro");
+                    // Mostrar resultados según la acción
+                    if (this.id === 'formulario-buscar') {
+                        document.getElementById('resultados-busqueda').style.display = 'block';
+                        llenarCamposBusqueda(data.data);
+                    } else if (this.id === 'formulario-actualizar') {
+                        document.getElementById('formulario-actualizacion').style.display = 'block';
+                        llenarCamposActualizacion(data.data);
+                    } else if (this.id === 'formulario-eliminar') {
+                        document.getElementById('resultados-eliminar').style.display = 'block';
+                        llenarCamposEliminacion(data.data);
+                    }
+                } else {
+                    mensajeDiv.style.backgroundColor = '#f8d7da'; // Mensaje de error
+                    mensajeDiv.textContent = data.error || 'Ocurrió un error.';
+                }
+                mensajeDiv.style.display = 'block'; // Mostrar el mensaje
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
-        }
+        });
     });
 
-    // Mostrar el formulario de inicio
-    document.getElementById("btn-inicio").addEventListener("click", function() {
-        window.location.href = "../Menu_inicio/inicio_Admin.html";
+    // Función para llenar los campos de búsqueda
+    function llenarCamposBusqueda(alumno) {
+        document.getElementById('nombre-buscar').value = alumno.nombre;
+        document.getElementById('curso-buscar').value = alumno.curso;
+        document.getElementById('email-buscar').value = alumno.email;
+        document.getElementById('telefono-buscar').value = alumno.telefonos;
+    }
+
+    // Función para llenar los campos de actualización
+    function llenarCamposActualizacion(alumno) {
+        document.getElementById('nombre-actualizar').value = alumno.nombre;
+        document.getElementById('curso-actualizar').value = alumno.curso;
+        document.getElementById('email-actualizar').value = alumno.email;
+        document.getElementById('actualizar-id').value = alumno.id;
+    }
+
+    // Función para llenar los campos de eliminación
+    function llenarCamposEliminacion(alumno) {
+        document.getElementById('nombre-eliminar').value = alumno.nombre;
+        document.getElementById('curso-eliminar').value = alumno.curso;
+        document.getElementById('email-eliminar').value = alumno.email;
+    }
+
+    // Confirmar eliminación
+    document.getElementById('btn-confirmar-eliminacion').addEventListener('click', function () {
+        const numeroDeControl = document.getElementById('eliminar-numero').value;
+
+        fetch('../Controladores/eliminar.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'eliminar', numero_de_control: numeroDeControl })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const mensajeDiv = document.getElementById('mensaje-eliminar');
+            if (data.success) {
+                mensajeDiv.style.backgroundColor = '#dff0d8'; // Mensaje de éxito
+                mensajeDiv.textContent = data.message;
+            } else {
+                mensajeDiv.style.backgroundColor = '#f8d7da'; // Mensaje de error
+                mensajeDiv.textContent = data.error || 'Ocurrió un error.';
+            }
+            mensajeDiv.style.display = 'block'; // Mostrar el mensaje
+            document.getElementById('resultados-eliminar').style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
 });
