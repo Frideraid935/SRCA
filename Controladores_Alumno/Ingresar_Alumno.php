@@ -8,7 +8,7 @@ $username = "root";        // Nombre de usuario de la base de datos (ajustar seg
 $password = "1234";        // Contraseña del usuario de la base de datos (ajustar según la configuración)
 $dbname = "srca";          // Nombre de la base de datos (ajustar según la configuración)
 
-// Crear una nueva conexión a la base de datos utilizando MySQLi
+// Crear una nueva conexión a la base de datos utilizando MySQLi0
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Verificar si hay un error en la conexión
