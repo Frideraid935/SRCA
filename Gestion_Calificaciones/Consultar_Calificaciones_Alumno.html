@@ -6,6 +6,28 @@
     <title>Consulta de Calificaciones</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../Estilos/estilo_cal_aumno.css">
+    <style>
+        /* Estilos adicionales para la tabla */
+        .tabla-calificaciones {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .tabla-calificaciones th, .tabla-calificaciones td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .tabla-calificaciones th {
+            background-color: #f2f2f2;
+        }
+        
+        .tabla-calificaciones tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
     <!-- Menú lateral -->
@@ -44,15 +66,15 @@
                     <span class="info-value" id="info-estudiante">N/A</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Materia:</span>
+                    <span class="info-label">Materias:</span>
                     <span class="info-value" id="info-materia">N/A</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Calificación:</span>
+                    <span class="info-label">Calificaciones:</span>
                     <span class="info-value" id="info-calificacion-valor">N/A</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Profesor:</span>
+                    <span class="info-label">Profesor(es):</span>
                     <span class="info-value" id="info-profesor">N/A</span>
                 </div>
             </div>
